@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Ops Helpdesk</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        #logs {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            min-height: 200px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Live Ops Helpdesk</h1>
+
+    <div>
+        <input type="text" id="agentName" placeholder="Enter Agent Name" />
+
+        <input type="text" id="ticketId" placeholder="Enter Ticket ID" />
+    </div>
+
+    <div>
+        <button onclick="joinDashboard()">
+            Join Dashboard
+        </button>
+
+        <button onclick="lockTicket()">
+            Lock Ticket
+        </button>
+
+        <button onclick="unlockTicket()">
+            Unlock Ticket
+        </button>
+    </div>
+
+    <h3>Activity Log</h3>
+
+    <ul id="logs"></ul>
+
+    <!-- Socket.IO Client -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        const socket = io();
+
+        function log(message) {
+            const li = document.createElement("li");
+            li.textContent = message;
+
+            document
+                .getElementById("logs")
+                .appendChild(li);
+        }
+
+        function joinDashboard() {
+            const agentName =
+                document.getElementById("agentName").value;
+
+            socket.emit("join_dashboard", {
+                agentName,
+            });
+        }
+
+        function lockTicket() {
+            const agentName =
+                document.getElementById("agentName").value;
+
+            const ticketId =
+                document.getElementById("ticketId").value;
+
+            socket.emit("lock_ticket", {
+                ticketId,
+                agentName,
+            });
+        }
+
+        function unlockTicket() {
+            const ticketId =
+                document.getElementById("ticketId").value;
+
+            socket.emit("unlock_ticket", {
+                ticketId,
+            });
+        }
+
+        socket.on("connect", () => {
+            log(`Connected: ${socket.id}`);
+        });
+
+        socket.on(
+            "joined_successfully",
+            (data) => {
+                log(
+                    `Dashboard joined successfully (${data.socketId})`
+                );
+
+                console.log(
+                    "Current Locks:",
+                    data.currentLocks
+                );
+            }
+        );
+
+        socket.on("ticket_locked", (data) => {
+            log(
+                `LOCKED: ${data.ticketId} by ${data.lockedBy}`
+            );
+        });
+
+        socket.on("ticket_unlocked", (data) => {
+            log(
+                `UNLOCKED: ${data.ticketId} (${data.reason})`
+            );
+        });
+
+        socket.on("lock_failed", (data) => {
+            log(
+                `LOCK FAILED: ${data.message}`
+            );
+        });
+
+        socket.on("unlock_failed", (data) => {
+            log(
+                `UNLOCK FAILED: ${data.message}`
+            );
+        });
+
+        socket.on("disconnect", () => {
+            log("Disconnected from server");
+        });
+    </script>
+
+</body>
+
+</html>
