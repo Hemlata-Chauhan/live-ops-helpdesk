@@ -66,10 +66,15 @@
     <ul id="logs"></ul>
 
     <!-- Socket.IO Client -->
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 
     <script>
-        const socket = io();
+        const socket = io(
+                "https://live-ops-helpdesk-backend.onrender.com",
+                {
+                    transports: ["websocket"],
+                }
+            );
 
         function log(message) {
             const li = document.createElement("li");

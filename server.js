@@ -2,23 +2,29 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const path = require("path");
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+const FRONTEND_URL =
+    "https://live-ops-helpdesk-theta.vercel.app";
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(
+    cors({
+        origin: FRONTEND_URL,
+        methods: ["GET", "POST"],
+    })
+);
+
+app.use(express.json());
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "*",
+        origin: FRONTEND_URL,
+        methods: ["GET", "POST"],
     },
 });
-
 
 const ticketLocks = new Map();
 
@@ -26,10 +32,8 @@ app.get("/", (req, res) => {
     res.send("Live Ops Helpdesk Running");
 });
 
-
 io.on("connection", (socket) => {
     console.log(`Connected: ${socket.id}`);
-
 
     socket.on("join_dashboard", ({ agentName }) => {
         console.log(`${agentName} joined dashboard`);
@@ -40,19 +44,12 @@ io.on("connection", (socket) => {
         });
     });
 
-
-
     socket.on("lock_ticket", ({ ticketId, agentName }) => {
-        console.log(
-            `${agentName} wants to lock ${ticketId}`
-        );
-
         if (ticketLocks.has(ticketId)) {
             socket.emit("lock_failed", {
                 ticketId,
                 message: "Ticket already locked",
             });
-
             return;
         }
 
@@ -61,10 +58,6 @@ io.on("connection", (socket) => {
             agentName,
         });
 
-        console.log(
-            `Locked ${ticketId} by ${agentName}`
-        );
-
         io.emit("ticket_locked", {
             ticketId,
             lockedBy: agentName,
@@ -72,27 +65,19 @@ io.on("connection", (socket) => {
         });
     });
 
-  
-
     socket.on("unlock_ticket", ({ ticketId }) => {
         const lockInfo = ticketLocks.get(ticketId);
 
-        if (!lockInfo) {
-            return;
-        }
+        if (!lockInfo) return;
 
         if (lockInfo.socketId !== socket.id) {
             socket.emit("unlock_failed", {
-                message:
-                    "Only lock owner can unlock ticket",
+                message: "Only lock owner can unlock ticket",
             });
-
             return;
         }
 
         ticketLocks.delete(ticketId);
-
-        console.log(`Unlocked ${ticketId}`);
 
         io.emit("ticket_unlocked", {
             ticketId,
@@ -100,30 +85,15 @@ io.on("connection", (socket) => {
         });
     });
 
-
     socket.on("disconnect", () => {
-        console.log(
-            `Socket disconnected: ${socket.id}`
-        );
-
         const releasedTickets = [];
 
-
-        for (const [
-            ticketId,
-            lockInfo,
-        ] of ticketLocks.entries()) {
+        for (const [ticketId, lockInfo] of ticketLocks.entries()) {
             if (lockInfo.socketId === socket.id) {
                 ticketLocks.delete(ticketId);
-
                 releasedTickets.push(ticketId);
-
-                console.log(
-                    `Auto-unlocked ${ticketId}`
-                );
             }
         }
-
 
         releasedTickets.forEach((ticketId) => {
             io.emit("ticket_unlocked", {
@@ -131,18 +101,11 @@ io.on("connection", (socket) => {
                 reason: "disconnect",
             });
         });
-
-        console.log(
-            `Released ${releasedTickets.length} ticket(s)`
-        );
     });
 });
 
-
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
-    console.log(
-        `Server running on port ${PORT}`
-    );
+    console.log(`Server running on port ${PORT}`);
 });
