@@ -171,12 +171,11 @@ which is ideal for real-time locking systems.
 
 ### Frontend (Vercel)
 
-https://live-ops-helpdesk-theta.vercel.app/
+https://live-ops-helpdesk-zeta.vercel.app/
 
 ### Backend (Render)
 
-https://live-ops-helpdesk-backend.onrender.com
-
+https://live-ops-helpdesk-backend-edpp.onrender.com
 ### GitHub Repository
 
 https://github.com/Hemlata-Chauhan/live-ops-helpdesk.git
