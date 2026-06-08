@@ -1,73 +1,119 @@
-<div class="container">
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class="hero">
-        <div>
-            <span class="badge">LIVE OPERATIONS</span>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-            <h1>
-                Real-Time Ticket
-                <span>Lock Management</span>
-            </h1>
+    <title>Live Ops Helpdesk</title>
 
-            <p>
-                Prevent duplicate ownership, synchronize
-                agents instantly, and recover from ghost
-                disconnects automatically.
-            </p>
-        </div>
+    <link rel="stylesheet" href="./css/styles.css" />
+</head>
 
-        <div class="status-card">
-            <div class="status-dot"></div>
-            <span>Socket Connected</span>
-        </div>
-    </div>
+<body>
 
-    <div class="dashboard-grid">
+    <div class="container">
 
-        <div class="control-panel">
+        <div class="hero">
+            <div>
+                <span class="badge">
+                    LIVE OPERATIONS
+                </span>
 
-            <h2>Agent Console</h2>
+                <h1>
+                    Real-Time Ticket
+                    <span>Lock Management</span>
+                </h1>
 
-            <div class="field">
-                <label>Agent Name</label>
-                <input type="text" id="agentName" placeholder="Enter your name" />
+                <p>
+                    Prevent duplicate ownership,
+                    synchronize agents instantly,
+                    and recover from ghost
+                    disconnects automatically.
+                </p>
             </div>
 
-            <div class="field">
-                <label>Ticket ID</label>
-                <input type="text" id="ticketId" placeholder="e.g. T101" />
-            </div>
+            <div class="status-card">
+                <div class="status-dot"></div>
 
-            <div class="button-group">
-                <button id="joinBtn">
-                    Join Dashboard
-                </button>
-
-                <button id="lockBtn">
-                    Lock Ticket
-                </button>
-
-                <button id="unlockBtn">
-                    Unlock Ticket
-                </button>
-            </div>
-
-        </div>
-
-        <div class="logs-panel">
-
-            <div class="panel-header">
-                <h2>Activity Stream</h2>
-
-                <span class="live-pill">
-                    LIVE
+                <span id="connectionStatus">
+                    Connecting...
                 </span>
             </div>
+        </div>
 
-            <ul id="logs"></ul>
+        <div class="dashboard-grid">
+
+            <!-- Left Panel -->
+
+            <div class="control-panel">
+
+                <h2>Agent Console</h2>
+
+                <div class="field">
+                    <label for="agentName">
+                        Agent Name
+                    </label>
+
+                    <input type="text" id="agentName" placeholder="Enter your name" />
+                </div>
+
+                <div class="field">
+                    <label for="ticketId">
+                        Ticket ID
+                    </label>
+
+                    <input type="text" id="ticketId" placeholder="e.g. T101" />
+                </div>
+
+                <div class="button-group">
+
+                    <button id="joinBtn">
+                        Join Dashboard
+                    </button>
+
+                    <button id="lockBtn">
+                        Lock Ticket
+                    </button>
+
+                    <button id="unlockBtn">
+                        Unlock Ticket
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- Right Panel -->
+
+            <div class="logs-panel">
+
+                <div class="panel-header">
+
+                    <h2>Activity Stream</h2>
+
+                    <span class="live-pill">
+                        LIVE
+                    </span>
+
+                </div>
+
+                <ul id="logs"></ul>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+    <!-- Socket.IO -->
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+    <!-- App JS -->
+
+    <script src="./js/app.js"></script>
+
+</body>
+
+</html>

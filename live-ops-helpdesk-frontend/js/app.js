@@ -31,28 +31,18 @@ function addLog(message, type = "info") {
 
     logs.prepend(li);
 }
-addLog(`🟢 Connected: ${socket.id}`, "success");
 
-addLog(
-    `🔒 ${data.ticketId} locked by ${data.lockedBy}`,
-    "warning"
-);
-
-addLog(
-    `🔓 ${data.ticketId} unlocked (${data.reason})`,
-    "success"
-);
-
-addLog(
-    `❌ Lock Failed: ${data.message}`,
-    "error"
-);
 
 function joinDashboard() {
-    const agentName = agentInput.value.trim();
+    const agentName =
+        agentInput.value.trim();
 
     if (!agentName) {
-        return addLog("⚠️ Enter agent name");
+        addLog(
+            "⚠️ Please enter agent name",
+            "warning"
+        );
+        return;
     }
 
     socket.emit("join_dashboard", {
@@ -61,15 +51,18 @@ function joinDashboard() {
 }
 
 function lockTicket() {
-    const ticketId = ticketInput.value.trim();
+    const ticketId =
+        ticketInput.value.trim();
 
     const agentName =
         agentInput.value.trim();
 
     if (!ticketId || !agentName) {
-        return addLog(
-            "⚠️ Agent Name and Ticket ID required"
+        addLog(
+            "⚠️ Agent Name and Ticket ID are required",
+            "warning"
         );
+        return;
     }
 
     socket.emit("lock_ticket", {
@@ -83,7 +76,11 @@ function unlockTicket() {
         ticketInput.value.trim();
 
     if (!ticketId) {
-        return addLog("⚠️ Enter ticket ID");
+        addLog(
+            "⚠️ Please enter Ticket ID",
+            "warning"
+        );
+        return;
     }
 
     socket.emit("unlock_ticket", {
@@ -108,7 +105,8 @@ unlockBtn.addEventListener(
 
 socket.on("connect", () => {
     addLog(
-        `🟢 Connected: ${socket.id}`
+        `🟢 Connected: ${socket.id}`,
+        "success"
     );
 });
 
@@ -116,37 +114,60 @@ socket.on(
     "joined_successfully",
     (data) => {
         addLog(
-            `✅ Joined Dashboard (${data.socketId})`
+            `✅ Joined Dashboard (${data.socketId})`,
+            "success"
+        );
+
+        console.log(
+            "Current Locks:",
+            data.currentLocks
         );
     }
 );
 
-socket.on("ticket_locked", (data) => {
-    addLog(
-        `🔒 ${data.ticketId} locked by ${data.lockedBy}`
-    );
-});
+socket.on(
+    "ticket_locked",
+    (data) => {
+        addLog(
+            `🔒 ${data.ticketId} locked by ${data.lockedBy}`,
+            "warning"
+        );
+    }
+);
 
-socket.on("ticket_unlocked", (data) => {
-    addLog(
-        `🔓 ${data.ticketId} unlocked (${data.reason})`
-    );
-});
+socket.on(
+    "ticket_unlocked",
+    (data) => {
+        addLog(
+            `🔓 ${data.ticketId} unlocked (${data.reason})`,
+            "success"
+        );
+    }
+);
 
-socket.on("lock_failed", (data) => {
-    addLog(
-        `❌ Lock Failed: ${data.message}`
-    );
-});
+socket.on(
+    "lock_failed",
+    (data) => {
+        addLog(
+            `❌ Lock Failed: ${data.message}`,
+            "error"
+        );
+    }
+);
 
-socket.on("unlock_failed", (data) => {
-    addLog(
-        `❌ Unlock Failed: ${data.message}`
-    );
-});
+socket.on(
+    "unlock_failed",
+    (data) => {
+        addLog(
+            `❌ Unlock Failed: ${data.message}`,
+            "error"
+        );
+    }
+);
 
 socket.on("disconnect", () => {
     addLog(
-        "🔴 Disconnected from server"
+        "🔴 Disconnected from server",
+        "error"
     );
 });
