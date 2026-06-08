@@ -1,5 +1,5 @@
 const socket = io(
-    "https://live-ops-helpdesk-backend.onrender.com",
+    "https://live-ops-helpdesk-backend-edpp.onrender.com",
     {
         transports: ["websocket"],
     }
@@ -23,13 +23,30 @@ const lockBtn =
 const unlockBtn =
     document.getElementById("unlockBtn");
 
-function addLog(message) {
+function addLog(message, type = "info") {
     const li = document.createElement("li");
 
     li.textContent = message;
+    li.classList.add(type);
 
     logs.prepend(li);
 }
+addLog(`🟢 Connected: ${socket.id}`, "success");
+
+addLog(
+    `🔒 ${data.ticketId} locked by ${data.lockedBy}`,
+    "warning"
+);
+
+addLog(
+    `🔓 ${data.ticketId} unlocked (${data.reason})`,
+    "success"
+);
+
+addLog(
+    `❌ Lock Failed: ${data.message}`,
+    "error"
+);
 
 function joinDashboard() {
     const agentName = agentInput.value.trim();

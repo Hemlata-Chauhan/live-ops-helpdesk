@@ -5,80 +5,206 @@
 }
 
 body {
-    background: #f4f7fb;
-    font-family: Arial, sans-serif;
-    padding: 30px;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg,
+            #0f172a,
+            #1e293b);
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #f8fafc;
 }
 
 .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: auto;
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #ffffff;
 }
 
 .card,
 .logs-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 16px;
+
+    padding: 24px;
 
     box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.1);
+        0 10px 30px rgba(0, 0, 0, 0.25);
+
+    margin-bottom: 25px;
 }
 
 .field {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .field label {
     display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #cbd5e1;
 }
 
 .field input {
     width: 100%;
-    padding: 10px;
+    padding: 14px;
 
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: 1px solid #334155;
+    border-radius: 10px;
+
+    background: #0f172a;
+    color: white;
+
+    font-size: 15px;
+
+    transition: all 0.3s ease;
+}
+
+.field input:focus {
+    outline: none;
+
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 0 0 4px rgba(59,
+            130,
+            246,
+            0.2);
+}
+
+.field input::placeholder {
+    color: #64748b;
 }
 
 .button-group {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
+    margin-top: 10px;
 }
 
 button {
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
+    flex: 1;
+    min-width: 180px;
 
-    background: #2563eb;
-    color: white;
+    padding: 14px 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 15px;
+    font-weight: 600;
 
     cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+#joinBtn {
+    background: #2563eb;
+    color: white;
+}
+
+#lockBtn {
+    background: #16a34a;
+    color: white;
+}
+
+#unlockBtn {
+    background: #dc2626;
+    color: white;
 }
 
 button:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+button:active {
+    transform: scale(0.98);
 }
 
 .logs-card h2 {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    color: white;
 }
 
 #logs {
     list-style: none;
+    max-height: 350px;
+    overflow-y: auto;
 }
 
 #logs li {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
+    background: rgba(255,
+            255,
+            255,
+            0.05);
+
+    padding: 12px 14px;
+
+    border-left: 4px solid #3b82f6;
+
+    margin-bottom: 10px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+}
+
+#logs::-webkit-scrollbar {
+    width: 8px;
+}
+
+#logs::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#logs::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 20px;
+}
+
+.success {
+    border-left-color: #22c55e;
+}
+
+.warning {
+    border-left-color: #f59e0b;
+}
+
+.error {
+    border-left-color: #ef4444;
+}
+
+.info {
+    border-left-color: #3b82f6;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
 }
