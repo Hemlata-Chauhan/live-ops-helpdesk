@@ -1,31 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="container">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <div class="hero">
+        <div>
+            <span class="badge">LIVE OPERATIONS</span>
 
-    <title>Live Ops Helpdesk</title>
+            <h1>
+                Real-Time Ticket
+                <span>Lock Management</span>
+            </h1>
 
-    <link rel="stylesheet" href="./css/styles.css" />
-</head>
+            <p>
+                Prevent duplicate ownership, synchronize
+                agents instantly, and recover from ghost
+                disconnects automatically.
+            </p>
+        </div>
 
-<body>
+        <div class="status-card">
+            <div class="status-dot"></div>
+            <span>Socket Connected</span>
+        </div>
+    </div>
 
-    <div class="container">
+    <div class="dashboard-grid">
 
-        <h1>🎫 Live Ops Helpdesk</h1>
+        <div class="control-panel">
 
-        <div class="card">
+            <h2>Agent Console</h2>
 
             <div class="field">
                 <label>Agent Name</label>
-                <input type="text" id="agentName" placeholder="Enter agent name" />
+                <input type="text" id="agentName" placeholder="Enter your name" />
             </div>
 
             <div class="field">
                 <label>Ticket ID</label>
-                <input type="text" id="ticketId" placeholder="Enter ticket ID" />
+                <input type="text" id="ticketId" placeholder="e.g. T101" />
             </div>
 
             <div class="button-group">
@@ -44,9 +54,15 @@
 
         </div>
 
-        <div class="logs-card">
+        <div class="logs-panel">
 
-            <h2>Activity Log</h2>
+            <div class="panel-header">
+                <h2>Activity Stream</h2>
+
+                <span class="live-pill">
+                    LIVE
+                </span>
+            </div>
 
             <ul id="logs"></ul>
 
@@ -54,10 +70,4 @@
 
     </div>
 
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-
-    <script src="./js/app.js"></script>
-
-</body>
-
-</html>
+</div>

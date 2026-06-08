@@ -6,7 +6,7 @@ const cors = require("cors");
 const app = express();
 
 const FRONTEND_URL =
-    "https://live-ops-helpdesk-zeta.vercel.app";
+    "https://live-ops-helpdesk-git-main-hemlatas-projects-fc46debc.vercel.app";
 
 app.use(
     cors({
