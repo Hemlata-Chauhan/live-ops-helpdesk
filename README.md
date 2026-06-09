@@ -171,7 +171,7 @@ which is ideal for real-time locking systems.
 
 ### Frontend (Vercel)
 
-https://live-ops-helpdesk-zeta.vercel.app/
+https://live-ops-helpdesk-zeta.vercel.app
 
 ### Backend (Render)
 
